@@ -1,14 +1,11 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
-
 from config.celery_tasks import CeleryTasks
 from manager.manager import DockerManger
 from manager.models import App
-from manager.serializers import CreateAppSerializer, RunAppSerializer
+from manager.serializers import CreateAppSerializer, RunAppSerializer, AppSerializer, AppAndContainerSerializer
 from config.logger import log_warning
-from config.settings import client
 
 
 class CreateAppAPIView(CreateAPIView):
@@ -35,3 +32,25 @@ class RunAppAPIView(CreateAPIView):
         context['name'] = self.kwargs['name']
         return context
 
+
+class AppListAPIView(ListAPIView):
+    serializer_class = AppSerializer
+    queryset = App.objects.all()
+
+
+class UpdateAppAPIView(UpdateAPIView):
+    serializer_class = AppSerializer
+    queryset = App.objects.all()
+    lookup_field = 'name'
+
+
+class RemoveApiView(DestroyAPIView):
+    serializer_class = AppSerializer
+    queryset = App.objects.all()
+    lookup_field = 'name'
+
+
+class GetAppAPIView(RetrieveAPIView):
+    serializer_class = AppAndContainerSerializer
+    queryset = App.objects.all()
+    lookup_field = 'name'
