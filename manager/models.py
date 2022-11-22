@@ -13,9 +13,9 @@ class App(models.Model):
 
 
 class Run(models.Model):
-    choice_list = [('R', 'Running'), ('Finished', 'F')]
+    choice_list = [('R', 'Running'), ('F', 'Finished')]
     id = models.BigAutoField(primary_key=True)
-    date_created = models.DateTimeField(auto_now=True)
+    date_created = models.DateTimeField(auto_now=True ,blank=False)
     state = models.CharField(max_length=100, choices=choice_list)
     envs = models.JSONField()
     command = models.CharField(max_length=200)
