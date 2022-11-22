@@ -27,7 +27,7 @@ class CeleryTasks:
                 Run.objects.create(state='F', envs=run.envs, command=run.command ,app_id=run.app_id , container_id=container_id)
 
 
-
 @celeryd_init.connect
 def configure_workers(*args, **kwargs):
     CeleryTasks.docker_events.delay()
+
