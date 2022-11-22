@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from manager.manager import DockerManger
+from manager.docker_manager import DockerManger
 from manager.models import App, Run
 
 

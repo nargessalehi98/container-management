@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from config.celery_tasks import CeleryTasks
-from manager.manager import DockerManger
+from manager.docker_manager import DockerManger
 from manager.models import App
 from manager.serializers import CreateAppSerializer, RunAppSerializer, AppSerializer, AppAndContainerSerializer
 from config.logger import log_warning
