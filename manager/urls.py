@@ -1,7 +1,13 @@
 from django.urls import path
 
-from manager.views import CreateAppAPIView, RunAppAPIView, AppListAPIView, UpdateAppAPIView, RemoveApiView, \
+from manager.views import (
+    CreateAppAPIView,
+    RunAppAPIView,
+    AppListAPIView,
+    UpdateAppAPIView,
+    RemoveApiView,
     GetAppAPIView
+)
 
 urlpatterns = [
     path('create/', CreateAppAPIView.as_view()),
