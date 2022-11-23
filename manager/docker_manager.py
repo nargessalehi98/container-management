@@ -1,6 +1,10 @@
 from dataclasses import dataclass
 import docker.errors
+from rest_framework import status
+
 from config.settings import client
+from config.logger import log_error
+from config.exceptions import RunException, ImageException
 
 
 @dataclass
@@ -20,13 +24,19 @@ class DockerManger:
     def pull(self):
         try:
             client.images.pull(self.image)
-            return True
-        except docker.errors.InvalidRepository:
-            return False
+        except docker.errors.APIError as e:
+            log_error(e)
+            raise ImageException
 
     def run(self):
         try:
-            res = client.containers.run(image=self.image, command=self.command, environment=self.envs, detach=True)
-            return res.id
-        except docker.errors.APIError:
-            return False
+            if self.get():
+                res = client.containers.run(image=self.image, command=self.command, environment=self.envs, detach=True)
+                if not res.id:
+                    raise RunException
+                return res.id
+            else:
+                raise RunException
+        except docker.errors.APIError as e:
+            log_error(e)
+            raise RunException
