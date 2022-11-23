@@ -15,8 +15,8 @@ class CreateAppAPIView(CreateAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         docker_manager = DockerManger(**serializer.validated_data)
-
         if not docker_manager.get():
+            log_warning(f'---> Image {docker_manager.image} is pulling... ')
             CeleryTasks.pull_image.delay(docker_manager)
             image = serializer.validated_data['image']
             log_warning(f'---> image {image} is pulling ...')
