@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 import docker.errors
-from rest_framework import status
-
 from config.settings import client
 from config.logger import log_error
 from config.exceptions import RunException, ImageException
