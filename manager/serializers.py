@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.exceptions import NotAcceptable
 
-from config.logger import log_warning
+from config.logger import log_info
 from manager.docker_manager import DockerManger
 from manager.models import App, Run
 
@@ -31,7 +31,7 @@ class RunAppSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         app = App.objects.get(name=self.context['name'])
         docker_manager = DockerManger(name=app.name, image=app.image, envs=app.envs, command=app.command)
-        log_warning(f'---> Docker container {docker_manager.image} is running ... ')
+        log_info(f'---> Docker container {docker_manager.image} is running ... ')
         container_id = docker_manager.run()
         return Run.objects.create(
             state='R',
