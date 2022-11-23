@@ -2,26 +2,24 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from config.celery_tasks import CeleryTasks
+from config.settings import client
 from manager.docker_manager import DockerManger
 from manager.models import App
 from manager.serializers import CreateAppSerializer, RunAppSerializer, AppSerializer, AppAndContainerSerializer
-from config.logger import log_warning
+from config.logger import log_info
 
 
 class CreateAppAPIView(CreateAPIView):
     serializer_class = CreateAppSerializer
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
+    def perform_create(self, serializer):
         docker_manager = DockerManger(**serializer.validated_data)
-        if not docker_manager.get():
-            log_warning(f'---> Image {docker_manager.image} is pulling... ')
-            CeleryTasks.pull_image.delay(docker_manager)
-            image = serializer.validated_data['image']
-            log_warning(f'---> image {image} is pulling ...')
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if docker_manager.get():
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        docker_manager.pull()
+        image = serializer.validated_data['image']
+        log_info(f'---> image {image} is pulling ...')
+        serializer.save()
 
 
 class RunAppAPIView(CreateAPIView):
