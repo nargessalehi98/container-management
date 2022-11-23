@@ -1,7 +1,7 @@
 from config.celery import app
 from config.settings import client
 from celery.signals import celeryd_init
-
+from config.logger import log_warning
 from manager.models import Run
 
 
@@ -24,10 +24,15 @@ class CeleryTasks:
             if event.get('status') in finish_statuses:
                 container_id = event.get('id')
                 run = Run.objects.get(container_id=container_id)
-                Run.objects.create(state='F', envs=run.envs, command=run.command ,app_id=run.app_id , container_id=container_id)
+                Run.objects.create(
+                    state='F',
+                    envs=run.envs,
+                    command=run.command,
+                    app_id=run.app_id,
+                    container_id=container_id
+                )
 
 
 @celeryd_init.connect
 def configure_workers(*args, **kwargs):
     CeleryTasks.docker_events.delay()
-
