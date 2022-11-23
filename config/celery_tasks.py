@@ -1,15 +1,21 @@
+import docker.errors
+
 from config.celery import app
 from config.settings import client
 from celery.signals import celeryd_init
-from config.logger import log_warning
+from manager.docker_manager import ImageException
 from manager.models import Run
+from config.logger import log_error
 
 
 class CeleryTasks:
     @staticmethod
     @app.task
     def pull_image(docker_manager):
-        docker_manager.pull()
+        try:
+            docker_manager.pull()
+        except ImageException as e:
+            log_error(e)
 
     @staticmethod
     @app.task
