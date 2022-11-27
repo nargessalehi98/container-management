@@ -1,0 +1,181 @@
+{
+	"info": {
+		"_postman_id": "14e09cfa-567d-4173-9d1f-3246e8640122",
+		"name": "container management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create an app",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\" :\"sss\",\n    \"image\" : \"redis\",\n    \"envs\" : {\"key1\" : 10000},\n    \"command\" : \"sleep 1000\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8081/manager/create/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8081",
+					"path": [
+						"manager",
+						"create",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "run an app",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8081/manager/run/:name/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8081",
+					"path": [
+						"manager",
+						"run",
+						":name",
+						""
+					],
+					"variable": [
+						{
+							"key": "name",
+							"value": "sss"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "app list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8080/manager/appList/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"manager",
+						"appList",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update an app",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"image\" : \"busybox\",\n    \"envs\" : {},\n    \"command\" : \"sleep 15\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/manager/updateApp/myapp/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"manager",
+						"updateApp",
+						"myapp",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove an app",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8080/manager/removeApp/myapspf/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"manager",
+						"removeApp",
+						"myapspf",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get an app",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8080/manager/getApp/myapp/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"manager",
+						"getApp",
+						"myapp",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
